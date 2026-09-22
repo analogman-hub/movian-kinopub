@@ -1,0 +1,9 @@
+{
+  "type": "ecmascript",
+  "apiversion": 2,
+  "id": "kinopub",
+  "file": "main.js",
+  "title": "Kinopub",
+  "version": "0.3.4",
+  "synopsis": "Клиент kino.pub: каталог, поиск, закладки, просмотр"
+}

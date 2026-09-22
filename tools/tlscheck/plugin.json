@@ -1,0 +1,9 @@
+{
+  "type": "ecmascript",
+  "apiversion": 2,
+  "id": "tlscheck",
+  "file": "main.js",
+  "title": "TLS check",
+  "version": "0.2",
+  "synopsis": "Проверка TLS-соединений Movian с хостами Kinopub"
+}
