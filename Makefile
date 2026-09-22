@@ -1,18 +1,27 @@
 # Сборка:
-#   kinopub.zip                    — сам плагин (plugin.json и main.js в корне архива, как требует Movian)
-#   movian-kinopub-<версия>.zip    — архив для распространения: kinopub.zip + инструкция по установке
+#   kinopub.zip                    — сам плагин (plugin.json, main.js, icon.png в корне архива)
+#   movian-kinopub-<версия>.zip    — архив для распространения: kinopub.zip + инструкция
+#   plugins-v1.json                — описание для репозитория плагинов Movian (make repo REPO=owner/name)
 VERSION := $(shell sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' plugin.json)
 DIST := movian-kinopub-$(VERSION).zip
+GUIDE := Инструкция по установке.txt
+REPO ?= analogman-hub/movian-kinopub
 
 all: $(DIST)
 
-kinopub.zip: plugin.json main.js
+kinopub.zip: plugin.json main.js icon.png
 	rm -f $@
-	zip -q $@ plugin.json main.js
+	zip -q $@ plugin.json main.js icon.png
 
-$(DIST): kinopub.zip INSTALL.txt
+$(DIST): kinopub.zip
 	rm -f movian-kinopub-*.zip
-	zip -q $@ kinopub.zip INSTALL.txt
+	zip -q $@ kinopub.zip "$(GUIDE)"
+	@echo "-> $@"
+
+repo: plugins-v1.json
+
+plugins-v1.json: plugin.json tools/make-repo.py README.md
+	python3 tools/make-repo.py $(REPO) > $@
 	@echo "-> $@"
 
 tlscheck.zip: tools/tlscheck/plugin.json tools/tlscheck/main.js
@@ -21,8 +30,9 @@ tlscheck.zip: tools/tlscheck/plugin.json tools/tlscheck/main.js
 check:
 	node -e "new Function(require('fs').readFileSync('main.js','utf8'))" && echo "main.js: syntax ok"
 	node -e "new Function(require('fs').readFileSync('tools/tlscheck/main.js','utf8'))" && echo "tlscheck: syntax ok"
+	python3 -c "import json;json.load(open('plugin.json'))" && echo "plugin.json: ok"
 
 clean:
 	rm -f kinopub.zip movian-kinopub-*.zip tlscheck.zip
 
-.PHONY: all check clean
+.PHONY: all repo check clean

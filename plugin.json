@@ -4,6 +4,7 @@
   "id": "kinopub",
   "file": "main.js",
   "title": "Kinopub",
-  "version": "0.3.8",
-  "synopsis": "Клиент kino.pub: каталог, поиск, закладки, просмотр"
+  "version": "0.3.9",
+  "synopsis": "Клиент kino.pub: каталог, поиск, закладки, просмотр",
+  "icon": "icon.png"
 }

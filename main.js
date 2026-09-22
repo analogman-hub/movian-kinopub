@@ -32,7 +32,7 @@ var lastVoiceName = null;
 var voiceNames = [];      // названия дорожек в порядке манифеста: hls:N -> voiceNames[N-1]
 
 try {
-  var cfg = new settings.globalSettings(PREFIX, 'Kinopub', null, 'Клиент kino.pub');
+  var cfg = new settings.globalSettings(PREFIX, 'Kinopub', Plugin.path + 'icon.png', 'Клиент kino.pub');
   cfg.createString('bootUrl', 'Адрес конфигурации (как плейлист в MicroIPTV)', DEFAULT_BOOT, function(v) {
     bootUrl = (v || DEFAULT_BOOT).replace(/\/+$/, '');
   });
@@ -70,7 +70,7 @@ try {
   console.log('[kinopub] settings failed: ' + e);
 }
 
-service.create('Kinopub', PREFIX + ':start', 'video', true, null);
+service.create('Kinopub', PREFIX + ':start', 'video', true, Plugin.path + 'icon.png');
 
 // ---------------------------------------------------------------- адрес API
 
@@ -564,6 +564,7 @@ function resolveRedirects(url) {
 new page.Route(PREFIX + ':start', guarded(function(pg) {
   pg.type = 'directory';
   pg.metadata.title = 'Kinopub';
+  pg.metadata.icon = Plugin.path + 'icon.png';
   if (!apiOverride && !conf.apiHost) {
     pg.loading = true;
     try {

@@ -1,6 +1,6 @@
 # Kinopub для Movian
 
-Плагин [Movian](https://movian.tv) (проверен на Movian M7 7.0 для PlayStation 3) для просмотра
+Плагин [Movian](https://movian.tv) (проверен на Movian M7 7.0.273 для PlayStation 3) для просмотра
 [kino.pub](https://kino.pub) по официальному API. Нужна подписка Kinopub.
 
 ## Возможности
@@ -24,9 +24,17 @@
 
 ## Установка
 
-Возьмите `movian-kinopub-<версия>.zip` из релизов или соберите его командой `make`. Внутри лежат
-сам плагин `kinopub.zip` и инструкция `INSTALL.txt`. Имя `kinopub.zip` менять нельзя: Movian хранит
-установленные плагины по имени файла, и архив с другим именем встанет рядом со старым, а не заменит его.
+Способ 0, из списка плагинов Movian. В Settings → Plugins → «Alternate plugin Repository URL» впишите
+
+```
+https://raw.githubusercontent.com/analogman-hub/movian-kinopub/main/plugins-v1.json
+```
+
+и установите Kinopub из «Browse available plugins». Обновления будут приходить прямо в Movian.
+
+Для остальных способов возьмите `movian-kinopub-<версия>.zip` из релизов или соберите его командой `make`.
+Внутри лежат сам плагин `kinopub.zip` и инструкция по установке. Имя `kinopub.zip` менять нельзя: Movian
+хранит установленные плагины по имени файла, и архив с другим именем встанет рядом со старым, а не заменит его.
 
 Способ 1, через файловый менеджер Movian: скопируйте zip на флешку, откройте его в Movian в разделе файлов,
 плагин установится сам.
@@ -78,10 +86,14 @@
 ## Сборка
 
 ```
-make              # movian-kinopub-<версия>.zip: kinopub.zip + INSTALL.txt
+make              # movian-kinopub-<версия>.zip: kinopub.zip + инструкция по установке
 make kinopub.zip  # только плагин
+make repo         # plugins-v1.json для репозитория плагинов Movian
 make check        # проверка синтаксиса (нужен node)
 ```
+
+Релиз: поднять версию в `plugin.json`, закоммитить, поставить тег `v<версия>` и запушить его. GitHub Actions
+соберёт архивы, опубликует релиз и обновит `plugins-v1.json` в ветке `main`.
 
 ## Лицензия
 
