@@ -24,14 +24,16 @@
 
 ## Установка
 
-Соберите архив (`make`) или возьмите готовый `kinopub-<версия>.zip` из релизов. В архиве
-`plugin.json` и `main.js` лежат в корне, это требование Movian.
+Возьмите `movian-kinopub-<версия>.zip` из релизов или соберите его командой `make`. Внутри лежат
+сам плагин `kinopub.zip` и инструкция `INSTALL.txt`. Имя `kinopub.zip` менять нельзя: Movian хранит
+установленные плагины по имени файла, и архив с другим именем встанет рядом со старым, а не заменит его.
 
 Способ 1, через файловый менеджер Movian: скопируйте zip на флешку, откройте его в Movian в разделе файлов,
 плагин установится сам.
 
-Способ 2, по FTP (на PS3 через webMAN MOD): положите архив как
-`/dev_hdd0/game/HTSS00003/USRDIR/settings/installedplugins/kinopub.zip` и перезапустите Movian.
+Способ 2, по FTP (на PS3 через webMAN MOD): положите `kinopub.zip` в
+`/dev_hdd0/game/HTSS00003/USRDIR/settings/installedplugins/`, удалите оттуда старые архивы плагина
+и перезапустите Movian.
 
 При первом запуске на экране появится код. Введите его на kino.pub в разделе «Мои устройства».
 
@@ -76,8 +78,9 @@
 ## Сборка
 
 ```
-make          # kinopub-<версия>.zip
-make check    # проверка синтаксиса (нужен node)
+make              # movian-kinopub-<версия>.zip: kinopub.zip + INSTALL.txt
+make kinopub.zip  # только плагин
+make check        # проверка синтаксиса (нужен node)
 ```
 
 ## Лицензия

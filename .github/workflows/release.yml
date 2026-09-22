@@ -1,4 +1,5 @@
-# При пуше тега вида v0.3.5 собирает kinopub-<версия>.zip и публикует его в GitHub Release.
+# При пуше тега вида v0.3.8 собирает movian-kinopub-<версия>.zip (kinopub.zip + INSTALL.txt)
+# и публикует его в GitHub Release.
 name: release
 
 on:
@@ -24,5 +25,5 @@ jobs:
       - name: Публикация релиза
         uses: softprops/action-gh-release@v2
         with:
-          files: kinopub-*.zip
+          files: movian-kinopub-*.zip
           generate_release_notes: true
