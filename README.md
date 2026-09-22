@@ -25,12 +25,18 @@
 ## Установка
 
 Способ 0, из списка плагинов Movian. В Settings → Plugins → «Alternate plugin Repository URL» впишите
+короткий адрес
+
+```
+https://dub.sh/movian-kinopub
+```
+
+и установите Kinopub из «Browse available plugins». Обновления будут приходить прямо в Movian.
+Если короткий адрес перестанет открываться, используйте полный:
 
 ```
 https://raw.githubusercontent.com/analogman-hub/movian-kinopub/main/plugins-v1.json
 ```
-
-и установите Kinopub из «Browse available plugins». Обновления будут приходить прямо в Movian.
 
 Для остальных способов возьмите `movian-kinopub-<версия>.zip` из релизов или соберите его командой `make`.
 Внутри лежат сам плагин `kinopub.zip` и инструкция по установке. Имя `kinopub.zip` менять нельзя: Movian
