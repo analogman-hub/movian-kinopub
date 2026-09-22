@@ -853,11 +853,14 @@ new page.Route(PREFIX + ':text:(\\d+):([a-z]+)', guarded(function(pg, itemId, ki
   pg.loading = false;
 }));
 
-// Трейлер: /v1/items/trailer отдаёт прямые mp4-файлы разного качества
+// Трейлер: по факту /v1/items/trailer отдаёт массив [{id, url}] с HLS-мастером на CDN,
+// по документации — объект с files[] из mp4. Поддерживаем оба варианта.
 new page.Route(PREFIX + ':trailer:(\\d+)', guarded(function(pg, itemId) {
   var r = api('/items/trailer', { id: itemId });
   console.log('[kinopub] trailer response: ' + JSON.stringify(r).substr(0, 800));
   var tr = r.trailer || {};
+  if (tr instanceof Array) tr = tr[0] || {};
+  var url = null;
   var files = tr.files || [];
   var best = null;
   files.forEach(function(f) {
@@ -865,11 +868,14 @@ new page.Route(PREFIX + ':trailer:(\\d+)', guarded(function(pg, itemId) {
     if (q > 1080) return;
     if (!best || q > (parseInt(best.quality, 10) || 0)) best = f;
   });
-  if (!best || !best.url) {
+  if (best && best.url) url = best.url;
+  else if (tr.url && !/youtube\.com|youtu\.be/.test(tr.url)) url = tr.url;
+  if (!url) {
     throw new Error(tr.url ? 'Трейлер доступен только на YouTube: ' + tr.url : 'У трейлера нет файлов для воспроизведения');
   }
-  var url = resolveRedirects(best.url);
-  console.log('[kinopub] trailer ' + itemId + ' ' + (best.quality || '') + ' ' + url);
+  url = resolveRedirects(url);
+  if (/\.m3u8(\?|$)/.test(url)) url = 'hls:' + url;
+  console.log('[kinopub] trailer ' + itemId + ' -> ' + url);
   pg.type = 'video';
   pg.source = 'videoparams:' + JSON.stringify({
     title: 'Трейлер',
