@@ -28,7 +28,7 @@
 короткий адрес
 
 ```
-http://tinyurl.com/m7knpub
+http://tinyurl.com/m7kinopub
 ```
 
 и установите Kinopub из «Browse available plugins». Обновления будут приходить прямо в Movian.
