@@ -28,7 +28,7 @@
 короткий адрес
 
 ```
-https://dub.sh/movian-kinopub
+http://tinyurl.com/m7knpub
 ```
 
 и установите Kinopub из «Browse available plugins». Обновления будут приходить прямо в Movian.
