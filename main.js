@@ -729,9 +729,26 @@ new page.Route(PREFIX + ':item:(\\d+)', guarded(function(pg, id) {
   pg.metadata.title = it.title;
   pg.metadata.icon = poster(it, 'big');
 
-  // Тип «info» в скине Movian показывает иконку и многострочный текст из root.description
+  // Заголовок: тип «info» показывает иконку и несколько строк текста; подробности по кнопкам
   var hdr = pg.appendPassiveItem('info', null, { icon: poster(it, 'big'), title: it.title });
-  hdr.root.description = it.title + '\n' + describe(it, true);
+  hdr.root.description = it.title + '\n' + describe(it, true).split('\n')[0];
+
+  var native = require('native/popup');
+  if (it.plot) {
+    pg.appendAction('Описание', function() { native.message(it.plot, true, false); });
+  }
+  if (it.cast || it.director) {
+    pg.appendAction('Актёры и создатели', function() {
+      var lines = [];
+      if (it.director) lines.push('Режиссёр: ' + it.director);
+      if (it.cast) lines.push('В ролях: ' + it.cast);
+      if (it.voice) lines.push('Озвучки: ' + it.voice);
+      native.message(lines.join('\n\n'), true, false);
+    });
+  }
+  if (it.trailer && (it.trailer.id || it.trailer.url)) {
+    pg.appendItem(PREFIX + ':trailer:' + it.id, 'video', { title: 'Трейлер', icon: poster(it, 'small') });
+  }
   if (isSerial(it)) {
     var wl = pg.appendAction(watchlistTitle(it.in_watchlist), function() { toggleWatchlist(it, wl); });
   }
@@ -794,6 +811,30 @@ new page.Route(PREFIX + ':item:(\\d+)', guarded(function(pg, id) {
       addOptions(vItem, v, vUrl, 0);
     });
   }
+  pg.loading = false;
+}));
+
+// Трейлер: /v1/items/trailer отдаёт прямые mp4-файлы разного качества
+new page.Route(PREFIX + ':trailer:(\\d+)', guarded(function(pg, itemId) {
+  var r = api('/items/trailer', { id: itemId });
+  var tr = r.trailer || {};
+  var files = tr.files || [];
+  var best = null;
+  files.forEach(function(f) {
+    var q = parseInt(f.quality, 10) || 0;
+    if (q > 1080) return;
+    if (!best || q > (parseInt(best.quality, 10) || 0)) best = f;
+  });
+  if (!best || !best.url) throw new Error('У трейлера нет файлов для воспроизведения');
+  var url = resolveRedirects(best.url);
+  console.log('[kinopub] trailer ' + itemId + ' ' + (best.quality || '') + ' ' + url);
+  pg.type = 'video';
+  pg.source = 'videoparams:' + JSON.stringify({
+    title: 'Трейлер',
+    canonicalUrl: PREFIX + ':trailer:' + itemId,
+    no_fs_scan: true,
+    sources: [{ url: url }]
+  });
   pg.loading = false;
 }));
 
