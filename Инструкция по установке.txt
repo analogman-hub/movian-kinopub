@@ -12,11 +12,11 @@ Movian версии 5.0 или новее (нужна поддержка TLS 1.2
 
 Способ 0. Из списка плагинов Movian (самый простой)
 -----------------------------------------------------
-1. В Movian: Settings -> Plugins -> «Alternate plugin Repository URL», впишите адрес
+1. В Movian: Settings -> General -> «Alternate plugin Repository URL», впишите адрес
      http://tinyurl.com/m7kinopub
    Если он не открывается, впишите полный:
      https://raw.githubusercontent.com/analogman-hub/movian-kinopub/main/plugins-v1.json
-2. Откройте «Browse available plugins», найдите Kinopub и нажмите «Install».
+2. Settings -> Plugins -> «Browse available plugins», найдите Kinopub и нажмите «Install».
    Обновления дальше будут приходить прямо в Movian.
 
 Способ 1. Через файловый менеджер Movian
@@ -43,9 +43,16 @@ Movian версии 5.0 или новее (нужна поддержка TLS 1.2
 
 Настройки
 ---------
-Settings -> Kinopub: протокол видео, качество, предпочитаемая озвучка,
-субтитры, синхронизация просмотра с kino.pub. Адрес API определяется
-автоматически, вводить ничего не нужно.
+Settings -> «Applications and installed plugins» -> Kinopub: протокол видео,
+качество, предпочитаемая озвучка, субтитры, синхронизация просмотра с kino.pub.
+Адрес API определяется автоматически, вводить ничего не нужно.
+
+Если каталог перестал открываться
+---------------------------------
+Settings -> «Applications and installed plugins» -> Kinopub -> «Обновить адрес API
+сейчас». Если не помогло, проверьте «Адрес конфигурации» (тот же адрес, что
+вводится в MicroIPTV на Apple TV) и повторите. В крайнем случае впишите рабочий
+адрес API в «Адрес API вручную», а после починки очистите это поле.
 
 Если что-то не работает
 -----------------------

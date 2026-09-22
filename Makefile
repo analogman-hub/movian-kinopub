@@ -1,6 +1,7 @@
 # Сборка:
-#   kinopub.zip                    — сам плагин (plugin.json, main.js, icon.png в корне архива)
-#   movian-kinopub-<версия>.zip    — архив для распространения: kinopub.zip + инструкция
+#   dist/kinopub.zip               — сам плагин (plugin.json, main.js, icon.png в корне архива). Лежит в git:
+#                                    на него ссылается plugins-v1.json, workflow обновляет его при релизе.
+#   movian-kinopub-<версия>.zip    — архив для людей: kinopub.zip + инструкция. Публикуется в релизе.
 #   plugins-v1.json                — описание для репозитория плагинов Movian (make repo REPO=owner/name)
 VERSION := $(shell sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' plugin.json)
 DIST := movian-kinopub-$(VERSION).zip
@@ -9,13 +10,14 @@ REPO ?= analogman-hub/movian-kinopub
 
 all: $(DIST)
 
-kinopub.zip: plugin.json main.js icon.png
+dist/kinopub.zip: plugin.json main.js icon.png
+	mkdir -p dist
 	rm -f $@
 	zip -q $@ plugin.json main.js icon.png
 
-$(DIST): kinopub.zip
+$(DIST): dist/kinopub.zip
 	rm -f movian-kinopub-*.zip
-	zip -q $@ kinopub.zip "$(GUIDE)"
+	zip -q -j $@ dist/kinopub.zip "$(GUIDE)"
 	@echo "-> $@"
 
 repo: plugins-v1.json
@@ -33,6 +35,6 @@ check:
 	python3 -c "import json;json.load(open('plugin.json'))" && echo "plugin.json: ok"
 
 clean:
-	rm -f kinopub.zip movian-kinopub-*.zip tlscheck.zip
+	rm -f movian-kinopub-*.zip tlscheck.zip
 
 .PHONY: all repo check clean

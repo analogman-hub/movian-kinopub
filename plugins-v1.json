@@ -12,7 +12,7 @@
       "description": "Плагин Movian (проверен на Movian M7 7.0.273 для PlayStation 3) для просмотра kino.pub по официальному API. Нужна подписка Kinopub.",
       "homepage": "https://github.com/analogman-hub/movian-kinopub",
       "category": "video",
-      "downloadURL": "https://github.com/analogman-hub/movian-kinopub/releases/download/v0.3.9/kinopub.zip",
+      "downloadURL": "https://raw.githubusercontent.com/analogman-hub/movian-kinopub/main/dist/kinopub.zip",
       "icon": "https://raw.githubusercontent.com/analogman-hub/movian-kinopub/main/icon.png",
       "control": {
         "uriprefixes": [

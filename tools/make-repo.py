@@ -2,7 +2,7 @@
 """Генерирует plugins-v1.json для репозитория плагинов Movian.
 
 Использование: tools/make-repo.py owner/repo > plugins-v1.json
-Адреса: архив плагина — из GitHub Release с тегом v<версия>, иконка — из ветки main через raw.githubusercontent.com.
+Адреса: архив плагина dist/kinopub.zip и иконка — из ветки main через raw.githubusercontent.com.
 """
 import json, re, sys
 
@@ -25,7 +25,7 @@ entry = {
     "description": intro,
     "homepage": f"https://github.com/{repo}",
     "category": "video",
-    "downloadURL": f"https://github.com/{repo}/releases/download/v{p['version']}/kinopub.zip",
+    "downloadURL": f"https://raw.githubusercontent.com/{repo}/main/dist/kinopub.zip",
     "icon": f"https://raw.githubusercontent.com/{repo}/main/icon.png",
     "control": {"uriprefixes": ["kinopub:"]},
 }
