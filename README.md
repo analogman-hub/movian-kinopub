@@ -35,7 +35,7 @@ http://tinyurl.com/m7knpub
 Если короткий адрес перестанет открываться, используйте полный:
 
 ```
-https://analogman-hub.github.io/movian-kinopub/plugins-v1.json
+https://raw.githubusercontent.com/analogman-hub/movian-kinopub/main/plugins-v1.json
 ```
 
 Для остальных способов возьмите `movian-kinopub-<версия>.zip` из релизов или соберите его командой `make`.
@@ -99,9 +99,7 @@ make check        # проверка синтаксиса (нужен node)
 ```
 
 Релиз: поднять версию в `plugin.json`, закоммитить, поставить тег `v<версия>` и запушить его. GitHub Actions
-соберёт архивы, опубликует релиз и обновит `plugins-v1.json` в ветке `main`. Файлы `plugins-v1.json` и
-`icon.png` раздаются через GitHub Pages репозитория (Settings → Pages → Deploy from a branch, ветка `main`,
-папка `/`), поэтому Pages должны быть включены.
+соберёт архивы, опубликует релиз и обновит `plugins-v1.json` в ветке `main`.
 
 ## Лицензия
 
