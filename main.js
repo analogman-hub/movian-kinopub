@@ -729,11 +729,9 @@ new page.Route(PREFIX + ':item:(\\d+)', guarded(function(pg, id) {
   pg.metadata.title = it.title;
   pg.metadata.icon = poster(it, 'big');
 
-  pg.appendPassiveItem('label', null, {
-    title: describe(it, true).split('\n')[0],
-    description: describe(it, true).split('\n').slice(1).join('\n'),
-    icon: poster(it, 'big')
-  });
+  // Тип «info» в скине Movian показывает иконку и многострочный текст из root.description
+  var hdr = pg.appendPassiveItem('info', null, { icon: poster(it, 'big'), title: it.title });
+  hdr.root.description = it.title + '\n' + describe(it, true);
   if (isSerial(it)) {
     var wl = pg.appendAction(watchlistTitle(it.in_watchlist), function() { toggleWatchlist(it, wl); });
   }

@@ -1,0 +1,28 @@
+# При пуше тега вида v0.3.5 собирает kinopub-<версия>.zip и публикует его в GitHub Release.
+name: release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Проверка синтаксиса
+        run: make check
+      - name: Сборка архива
+        run: make
+      - name: Версия в plugin.json должна совпадать с тегом
+        run: |
+          v=$(sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' plugin.json)
+          test "v$v" = "${GITHUB_REF_NAME}" || { echo "plugin.json: $v, тег: ${GITHUB_REF_NAME}"; exit 1; }
+      - name: Публикация релиза
+        uses: softprops/action-gh-release@v2
+        with:
+          files: kinopub-*.zip
+          generate_release_notes: true
