@@ -733,21 +733,20 @@ new page.Route(PREFIX + ':item:(\\d+)', guarded(function(pg, id) {
   var hdr = pg.appendPassiveItem('info', null, { icon: poster(it, 'big'), title: it.title });
   hdr.root.description = it.title + '\n' + describe(it, true).split('\n')[0];
 
-  var native = require('native/popup');
   if (it.plot) {
-    pg.appendAction('Описание', function() { native.message(it.plot, true, false); });
+    pg.appendItem(PREFIX + ':text:' + it.id + ':plot', 'directory', {
+      title: 'Описание', icon: 'skin://icons/ic_description_48px.svg'
+    });
   }
   if (it.cast || it.director) {
-    pg.appendAction('Актёры и создатели', function() {
-      var lines = [];
-      if (it.director) lines.push('Режиссёр: ' + it.director);
-      if (it.cast) lines.push('В ролях: ' + it.cast);
-      if (it.voice) lines.push('Озвучки: ' + it.voice);
-      native.message(lines.join('\n\n'), true, false);
+    pg.appendItem(PREFIX + ':text:' + it.id + ':cast', 'directory', {
+      title: 'Актёры и создатели', icon: 'skin://icons/ic_person_48px.svg'
     });
   }
   if (it.trailer && (it.trailer.id || it.trailer.url)) {
-    pg.appendItem(PREFIX + ':trailer:' + it.id, 'video', { title: 'Трейлер', icon: poster(it, 'small') });
+    pg.appendItem(PREFIX + ':trailer:' + it.id, 'video', {
+      title: 'Трейлер', icon: 'skin://icons/ic_play_arrow_48px.svg'
+    });
   }
   if (isSerial(it)) {
     var wl = pg.appendAction(watchlistTitle(it.in_watchlist), function() { toggleWatchlist(it, wl); });
@@ -814,9 +813,50 @@ new page.Route(PREFIX + ':item:(\\d+)', guarded(function(pg, id) {
   pg.loading = false;
 }));
 
+// Длинный текст: список элементов «info», он скроллится в отличие от модального окна
+function textChunks(text, limit) {
+  var out = [];
+  String(text || '').split(/\n+/).forEach(function(par) {
+    par = par.replace(/\s+/g, ' ').replace(/^ | $/g, '');
+    while (par.length > limit) {
+      var cut = par.lastIndexOf('. ', limit);
+      if (cut < limit / 2) cut = par.lastIndexOf(' ', limit);
+      if (cut <= 0) cut = limit;
+      out.push(par.substr(0, cut + 1).replace(/ $/, ''));
+      par = par.substr(cut + 1).replace(/^ /, '');
+    }
+    if (par) out.push(par);
+  });
+  return out;
+}
+
+new page.Route(PREFIX + ':text:(\\d+):([a-z]+)', guarded(function(pg, itemId, kind) {
+  var it = api('/items/' + itemId, { nolinks: 1 }).item;
+  pg.type = 'directory';
+  var text;
+  if (kind === 'cast') {
+    pg.metadata.title = it.title + ': актёры и создатели';
+    var lines = [];
+    if (it.director) lines.push('Режиссёр: ' + it.director);
+    if (it.cast) lines.push('В ролях: ' + it.cast);
+    if (it.voice) lines.push('Озвучки: ' + it.voice);
+    text = lines.join('\n');
+  } else {
+    pg.metadata.title = it.title + ': описание';
+    text = it.plot || '';
+  }
+  pg.metadata.icon = poster(it, 'big');
+  textChunks(text, 500).forEach(function(chunk, i) {
+    var item = pg.appendPassiveItem('info', null, i === 0 ? { icon: poster(it, 'big') } : {});
+    item.root.description = chunk;
+  });
+  pg.loading = false;
+}));
+
 // Трейлер: /v1/items/trailer отдаёт прямые mp4-файлы разного качества
 new page.Route(PREFIX + ':trailer:(\\d+)', guarded(function(pg, itemId) {
   var r = api('/items/trailer', { id: itemId });
+  console.log('[kinopub] trailer response: ' + JSON.stringify(r).substr(0, 800));
   var tr = r.trailer || {};
   var files = tr.files || [];
   var best = null;
@@ -825,7 +865,9 @@ new page.Route(PREFIX + ':trailer:(\\d+)', guarded(function(pg, itemId) {
     if (q > 1080) return;
     if (!best || q > (parseInt(best.quality, 10) || 0)) best = f;
   });
-  if (!best || !best.url) throw new Error('У трейлера нет файлов для воспроизведения');
+  if (!best || !best.url) {
+    throw new Error(tr.url ? 'Трейлер доступен только на YouTube: ' + tr.url : 'У трейлера нет файлов для воспроизведения');
+  }
   var url = resolveRedirects(best.url);
   console.log('[kinopub] trailer ' + itemId + ' ' + (best.quality || '') + ' ' + url);
   pg.type = 'video';
