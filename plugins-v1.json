@@ -3,7 +3,7 @@
   "plugins": [
     {
       "id": "kinopub",
-      "version": "0.3.9",
+      "version": "0.3.10",
       "type": "ecmascript",
       "author": "Konstantin (mranalogman)",
       "showtimeVersion": "5.0.0",

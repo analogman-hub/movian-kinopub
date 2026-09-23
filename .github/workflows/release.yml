@@ -32,7 +32,7 @@ jobs:
         run: |
           git fetch origin main
           git checkout main
-          make dist/kinopub.zip
+          make -B dist/kinopub.zip
           make repo REPO="${GITHUB_REPOSITORY}"
           if git diff --quiet -- dist/kinopub.zip plugins-v1.json; then echo "без изменений"; exit 0; fi
           git config user.name "github-actions[bot]"

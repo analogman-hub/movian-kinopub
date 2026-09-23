@@ -20,11 +20,10 @@ $(DIST): dist/kinopub.zip
 	zip -q -j $@ dist/kinopub.zip "$(GUIDE)"
 	@echo "-> $@"
 
-repo: plugins-v1.json
-
-plugins-v1.json: plugin.json tools/make-repo.py README.md
-	python3 tools/make-repo.py $(REPO) > $@
-	@echo "-> $@"
+# Всегда перегенерируется: после git checkout у файлов одинаковое время, и по нему нельзя судить о свежести
+repo:
+	python3 tools/make-repo.py $(REPO) > plugins-v1.json
+	@echo "-> plugins-v1.json"
 
 tlscheck.zip: tools/tlscheck/plugin.json tools/tlscheck/main.js
 	cd tools/tlscheck && zip -q ../../$@ plugin.json main.js
