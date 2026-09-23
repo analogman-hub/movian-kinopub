@@ -35,7 +35,7 @@
    Если короткий адрес перестанет открываться, впишите полный:
 
    ```
-   https://raw.githubusercontent.com/analogman-hub/movian-kinopub/main/plugins-v1.json
+   https://raw.githubusercontent.com/mranalogman/movian-kinopub/main/plugins-v1.json
    ```
 
 2. Settings → Plugins → «Browse available plugins», найдите Kinopub и нажмите Install.
@@ -45,7 +45,7 @@
 ### Вручную
 
 Скачайте `movian-kinopub-<версия>.zip` со страницы
-[последнего релиза](https://github.com/analogman-hub/movian-kinopub/releases/latest). Внутри сам плагин
+[последнего релиза](https://github.com/mranalogman/movian-kinopub/releases/latest). Внутри сам плагин
 `kinopub.zip` и инструкция по установке. Имя `kinopub.zip` менять нельзя: Movian хранит установленные плагины
 по имени файла, и архив с другим именем встанет рядом со старым, а не заменит его.
 

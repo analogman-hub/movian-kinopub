@@ -6,7 +6,7 @@
 VERSION := $(shell sed -n 's/.*"version": *"\([^"]*\)".*/\1/p' plugin.json)
 DIST := movian-kinopub-$(VERSION).zip
 GUIDE := Инструкция по установке.txt
-REPO ?= analogman-hub/movian-kinopub
+REPO ?= mranalogman/movian-kinopub
 
 all: $(DIST)
 

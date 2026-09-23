@@ -6,7 +6,7 @@
 """
 import json, re, sys
 
-repo = sys.argv[1] if len(sys.argv) > 1 else "analogman-hub/movian-kinopub"
+repo = sys.argv[1] if len(sys.argv) > 1 else "mranalogman/movian-kinopub"
 p = json.load(open("plugin.json", encoding="utf-8"))
 readme = open("README.md", encoding="utf-8").read()
 
@@ -18,7 +18,7 @@ entry = {
     "id": p["id"],
     "version": p["version"],
     "type": p["type"],
-    "author": "Konstantin (analogman-hub)",
+    "author": "Konstantin (mranalogman)",
     "showtimeVersion": "5.0.0",
     "title": p.get("title", "Kinopub"),
     "synopsis": p.get("synopsis", ""),

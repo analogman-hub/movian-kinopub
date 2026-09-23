@@ -15,7 +15,7 @@ Movian версии 5.0 или новее (нужна поддержка TLS 1.2
 1. В Movian: Settings -> General -> «Alternate plugin Repository URL», впишите адрес
      http://tinyurl.com/m7kinopub
    Если он не открывается, впишите полный:
-     https://raw.githubusercontent.com/analogman-hub/movian-kinopub/main/plugins-v1.json
+     https://raw.githubusercontent.com/mranalogman/movian-kinopub/main/plugins-v1.json
 2. Settings -> Plugins -> «Browse available plugins», найдите Kinopub и нажмите «Install».
    Обновления дальше будут приходить прямо в Movian.
 
