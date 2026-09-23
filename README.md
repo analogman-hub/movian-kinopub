@@ -38,7 +38,7 @@
    https://raw.githubusercontent.com/mranalogman/movian-kinopub/main/plugins-v1.json
    ```
 
-2. Settings → Plugins → «Browse available plugins», найдите Kinopub и нажмите Install.
+2. Plugins → «Browse available plugins» → «Video streaming», найдите Kinopub и нажмите Install.
 
 Обновления после этого приходят прямо в Movian.
 
