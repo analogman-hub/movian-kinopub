@@ -29,7 +29,7 @@
 1. Settings → General → «Alternate plugin Repository URL», впишите короткий адрес:
 
    ```
-   http://tinyurl.com/m7kinopub
+   http://tinyurl.com/m7-kinopub
    ```
 
    Если короткий адрес перестанет открываться, впишите полный:
