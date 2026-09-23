@@ -1,6 +1,6 @@
 # Kinopub для Movian
 
-Плагин [Movian](https://movian.tv) (проверен на Movian M7 7.0.273 для PlayStation 3) для просмотра
+Плагин [Movian](https://movian.eu) (проверен на Movian M7 7.0.273 для PlayStation 3) для просмотра
 [kino.pub](https://kino.pub) по официальному API. Нужна подписка Kinopub.
 
 ## Возможности
