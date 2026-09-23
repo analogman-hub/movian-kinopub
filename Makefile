@@ -33,6 +33,9 @@ check:
 	node -e "new Function(require('fs').readFileSync('main.js','utf8'))" && echo "main.js: syntax ok"
 	node -e "new Function(require('fs').readFileSync('tools/tlscheck/main.js','utf8'))" && echo "tlscheck: syntax ok"
 	python3 -c "import json;json.load(open('plugin.json'))" && echo "plugin.json: ok"
+	@test "$$(sed -n "s/.*PLUGIN_VERSION = '\([^']*\)'.*/\1/p" main.js)" = "$(VERSION)" \
+	  || { echo "PLUGIN_VERSION в main.js не совпадает с plugin.json ($(VERSION))"; exit 1; }
+	@echo "версия: $(VERSION)"
 
 clean:
 	rm -f movian-kinopub-*.zip tlscheck.zip

@@ -9,6 +9,7 @@ var popup = require('movian/popup');
 var prop = require('movian/prop');
 
 var PREFIX = 'kinopub';
+var PLUGIN_VERSION = '0.3.10';   // make check сверяет с plugin.json
 var DEFAULT_BOOT = 'https://1abab.ru';
 var FALLBACK_API = 'https://api.boramoraboom.ru';
 var CLIENT_ID = 'xbmc';
@@ -291,6 +292,38 @@ function apiAsync(path, args, cb) {
     });
   }
   go();
+}
+
+// Сведения об устройстве для «Мои устройства» на kino.pub: после активации и раз в сутки
+function deviceInfo() {
+  var ps3 = /^\/dev_hdd0\//.test(String(Core.storagePath || ''));
+  return {
+    title: ps3 ? 'Movian на PlayStation 3' : 'Movian',
+    hardware: ps3 ? 'Sony PlayStation 3' : 'Unknown',
+    software: 'Movian ' + (Core.currentVersionString || '?') + ', плагин kinopub ' + PLUGIN_VERSION
+  };
+}
+
+function deviceNotify(force) {
+  var info = deviceInfo();
+  var stamp = info.software + '|' + info.hardware;
+  if (!force && conf.notifyStamp === stamp && conf.notifyTs && Date.now() - conf.notifyTs < 24 * 3600 * 1000) return;
+  if (!haveAuth()) return;
+  http.request(apiBase + '/v1/device/notify', {
+    method: 'POST',
+    postdata: info,
+    args: { access_token: auth.access },
+    headers: { Authorization: 'Bearer ' + auth.access },
+    noFail: true, noAuth: true
+  }, function(err, res) {
+    if (err || res.statuscode !== 200) {
+      console.log('[kinopub] device/notify failed: ' + (err || ('HTTP ' + res.statuscode)));
+      return;
+    }
+    conf.notifyStamp = stamp;
+    conf.notifyTs = Date.now();
+    console.log('[kinopub] device/notify ok: ' + JSON.stringify(info));
+  });
 }
 
 // Единая обёртка страницы: ловит ошибки и отправляет на активацию при NOAUTH.
@@ -579,6 +612,7 @@ new page.Route(PREFIX + ':start', guarded(function(pg) {
   } else {
     resolveApiHost(false, null);
   }
+  deviceNotify(false);
   pg.appendAction('Поиск по Kinopub', function() {
     var r = require('native/popup').textDialog('Поиск по Kinopub', true, true);
     if (r && r.input) pg.redirect(PREFIX + ':search:' + encodeURIComponent(r.input));
@@ -628,6 +662,7 @@ new page.Route(PREFIX + ':activate', function(pg) {
         if (t.status === 200 && t.json.access_token) {
           saveTokens(t.json);
           popup.notify('Kinopub: устройство активировано', 5);
+          deviceNotify(true);
           pg.redirect(PREFIX + ':start');
         } else if (t.json.error === 'authorization_pending' || t.status === 0) {
           setTimeout(poll, interval);
